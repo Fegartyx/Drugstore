@@ -16,7 +16,7 @@ class CartController extends Controller
         ];
         $validatedData = request()->validate($rules);
 
-        // ddd(request()->all());
+
         if (request()->product_id) {
             Cart::create($validatedData);
         }
@@ -31,9 +31,9 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Cart $cart)
+    public function destroy($id)
     {
-        Cart::destroy($cart->id);
+        Cart::destroy($id);
 
         return redirect()->back();
     }

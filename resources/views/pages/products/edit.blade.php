@@ -38,58 +38,70 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text"
-                                    class="form-control @error('name')
+                                       class="form-control @error('name')
                                 is-invalid
                             @enderror"
-                                    name="name" value="{{ $product->name }}">
+                                       name="name" value="{{ $product->name }}">
                                 @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            {{-- <div class="mb-3">
+                                <label for="slug" class="form-label">Slug</label>
+                                <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                    id="slug" name="slug" readonly required
+                                    value="{{ old('slug', $product->slug) }}">
+                                @error('slug')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>Description</label>
                                 <input type="description"
-                                    class="form-control @error('description')
+                                       class="form-control @error('description')
                                 is-invalid
                             @enderror"
-                                    name="description" value="{{ $product->description }}">
+                                       name="description" value="{{ $product->description }}">
                                 @error('description')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Price</label>
                                 <input type="number"
-                                    class="form-control @error('price')
+                                       class="form-control @error('price')
                                 is-invalid
                             @enderror"
-                                    name="price" value="{{ $product->price }}">
+                                       name="price" value="{{ $product->price }}">
                                 @error('price')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Stock</label>
                                 <input type="number"
-                                    class="form-control @error('stock')
+                                       class="form-control @error('stock')
                                 is-invalid
                             @enderror"
-                                    name="stock" value="{{ $product->stock }}">
+                                       name="stock" value="{{ $product->stock }}">
                                 @error('stock')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Category</label>
-                                <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
+                                <select class="form-control @error('category_id') is-invalid @enderror"
+                                        name="category_id">
                                     @foreach ($categories as $category)
                                         @if (old('category_id', $product->category_id) == $category->id)
                                             <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
@@ -99,30 +111,37 @@
                                     @endforeach
                                 </select>
                                 @error('category_id')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
+                                <label>{{ $product->status }}</label>
+                                <label>{{ $product->status == 'available' ? 'available' : 'unavailable' }}</label>
+                                <label>{{ $product->status == 'unavailable' ? 'available' : 'unavailable' }}</label>
                                 <select class="form-control @error('status') is-invalid @enderror" name="status">
-                                    <option value="{{ old('status', $product->status == 1 ? '1' : '0') }}">
-                                        {{ $product->status == 1 ? 'Available' : 'Not Available' }}</option>
-                                    <option value="{{ old('status', $product->status == 1 ? '0' : '1') }}">
-                                        {{ $product->status == 1 ? 'Not Available' : 'Available' }}</option>
+                                    <option value="available"
+                                        {{ old('status', $product->status == 'available' ? 'selected' : '') }}>
+                                        Available
+                                    </option>
+                                    <option value="unavailable"
+                                        {{ old('status', $product->status == 'unavailable' ? 'selected' : '') }}>
+                                        Not Available
+                                    </option>
                                 </select>
                                 @error('status')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Input Image</label>
                                 @if ($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}"
-                                        class="img-preview img-fluid mb-3 col-sm-5 d-block">
+                                         class="img-preview img-fluid mb-3 col-sm-5 d-block">
                                 @else
                                     <img class="img-preview img-fluid mb-3 col-sm-5">
                                 @endif
@@ -132,14 +151,45 @@
                 @enderror"
                                     onchange="previewImage()" type="file" id="image" name="image">
                                 @error('image')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="card-footer text-right">
-                            <button class="btn btn-primary">Submit</button>
+                            <div class="form-group">
+                                <label>Release Date</label>
+                                <div class="input-group">
+                                    <input type="Date"
+                                           class="form-control @error('release_date')
+                                is-invalid
+                            @enderror"
+                                           name="release_date"
+                                           value="{{ old('release_date', $product->release_date) }}">>
+                                </div>
+                                @error('release_date')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Expire Date</label>
+                                <div class="input-group">
+                                    <input type="date"
+                                           class="form-control @error('expire_date')
+                                is-invalid
+                            @enderror"
+                                           name="expire_date" value="{{ old('expire_date', $product->expire_date) }}">>
+                                </div>
+                                @error('expire_date')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="card-footer text-right">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
                     </form>
                 </div>

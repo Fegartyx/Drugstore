@@ -5,6 +5,7 @@
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 @endpush
 
 @section('main')
@@ -53,16 +54,25 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Description</th>
+                                            <th>Products</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($categories as $category)
-                                            <tr>
-
+                                            <tr class="category-row">
                                                 <td>{{ $category->name }}
                                                 </td>
                                                 <td>
                                                     {{ $category->description }}
+                                                </td>
+                                                <td class="product-container">
+                                                    @if($category->products->count() > 0)
+                                                        @foreach ($category->products as $product)
+                                                            <div class="product-item">{{ $product->name }}</div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="product-item">No products</div>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     {{ $category->created_at }}
@@ -70,28 +80,30 @@
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <a href='/features/categories/{{ $category->id }}/edit'
-                                                            class="btn btn-sm btn-info btn-icon">
+                                                           class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
                                                         <form action="/features/categories/{{ $category->id }}"
-                                                            method="POST" class="ml-2"
-                                                            @if ($category->products->count() > 0) hidden @endif>
+                                                              method="POST" class="ml-2"
+                                                              @if ($category->products->count() > 0) hidden @endif>
                                                             @method('delete')
-                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                            <input type="hidden" name="_method" value="DELETE"/>
                                                             <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}" />
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                   value="{{ csrf_token() }}"/>
+                                                            <button
+                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
                                                                 <i class="fas fa-times"></i>
                                                                 Delete
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <button class="toggle-products">Show/Hide Products</button>
+                                                </td>
                                             </tr>
                                         @endforeach
-
-
                                     </table>
                                 </div>
                                 <div class="float-right">
@@ -112,4 +124,11 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.toggle-products').click(function () {
+                $(this).closest('tr').find('.product-container').toggle();
+            });
+        });
+    </script>
 @endpush

@@ -21,7 +21,7 @@
                     <div class="breadcrumb-item">All Products</div>
                 </div>
             </div>
-            <div class="section-body">
+            <div class="section-body bg-light">
                 <div class="row">
                     <div class="col-12">
                         @include('layouts.alert')
@@ -31,7 +31,6 @@
                 <p class="section-lead">
                     You can manage all History Transactions, such as editing, deleting and more.
                 </p>
-
 
                 <div class="row mt-4">
                     <div class="col-12">
@@ -52,6 +51,10 @@
                                 </div>
 
                                 <div class="clearfix mb-3"></div>
+
+                                <a href="{{ route('export') }}" class="btn btn-success">
+                                    <i class="fas fa-file-excel"></i> Export to Excel
+                                </a>
 
                                 <div class="table-responsive">
                                     <table class="table-striped table">

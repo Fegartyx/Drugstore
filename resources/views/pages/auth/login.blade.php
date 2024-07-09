@@ -10,7 +10,7 @@
 @section('main')
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Login POS Resto</h4>
+            <h4>Login Drugstore Aisyah Farma</h4>
         </div>
 
         <div class="card-body">

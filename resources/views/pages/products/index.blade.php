@@ -35,7 +35,7 @@
 
                 <div class="row mt-4">
                     <div class="col-12">
-                        <div class="card">
+                        <div class="card bg-light">
                             <div class="card-header">
                                 <h4>All Products</h4>
                             </div>
@@ -63,8 +63,9 @@
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($products as $product)
+                                            {{-- @foreach ($carts as $cart) --}}
+                                            {{-- @foreach ($histories as $history) --}}
                                             <tr>
-
                                                 <td>{{ $product->name }}
                                                 </td>
                                                 <td>
@@ -73,36 +74,43 @@
                                                 <td>
                                                     {{ $product->price }}
                                                 </td>
-                                                <td>{{ $product->status == 1 ? 'Available' : 'Not Available' }}</td>
+                                                <td>{{ $product->status }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <a href='/features/products/{{ $product->id }}/edit'
-                                                            class="btn btn-sm btn-info btn-icon">
+                                                           class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
 
-                                                        <form action="/features/products/{{ $product->id }}" method="POST"
-                                                            class="ml-2">
-                                                            @method('delete')
-                                                            <input type="hidden" name="_method" value="DELETE" />
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}" />
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
+                                                        <form action="/features/products/{{ $product->id }}"
+                                                              method="POST"
+                                                              class="ml-2">
+                                                            @if ($product->historyTransaction->isEmpty())
+                                                                @if ($product->historyTransaction->count() > 0)
+                                                                    hidden
+                                                                @endif
+                                                                @method('delete')
+                                                                <input type="hidden" name="_method" value="DELETE"/>
+                                                                <input type="hidden" name="_token"
+                                                                       value="{{ csrf_token() }}"/>
+                                                                <button
+                                                                    class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                    <i class="fas fa-times"></i> Delete
+                                                                </button>
+                                                            @endif
                                                         </form>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            {{-- @endforeach --}}
+                                            {{-- @endforeach --}}
                                         @endforeach
-
-
                                     </table>
                                 </div>
-                                <div class="float-right">
+                                {{-- <div class="float-right">
                                     {{ $products->withQueryString()->links() }}
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

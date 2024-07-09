@@ -1,7 +1,7 @@
-<div class="main-sidebar sidebar-style-2">
+<div class="main-sidebar sidebar-style-2 bg-secondary">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="/dashboard">POS Resto</a>
+            <a href="/dashboard">Drugstore</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="/dashboard">St</a>
@@ -39,23 +39,27 @@
                 </ul>
             </li> --}}
             <li class="nav-item dropdown {{ Request::is('features*') ? 'active' : '' }}">
-                <a href="/features/users" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i>
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i>
                     <span>Features</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('features/categories*') ? 'active' : '' }}">
+                    <li class="{{ Request::is('features/categories') ? 'active' : '' }}">
                         <a class="nav-link" href="/features/categories">Categories</a>
                     </li>
-                    <li class="{{ Request::is('features/products*') ? 'active' : '' }}">
-                        <a class="nav-link" href="/features/products">Products</a>
-                    </li>
-                    <li class="{{ Request::is('features/transactions*') ? 'active' : '' }}">
-                        <a class="nav-link" href="/features/transactions">Transactions/Cart</a>
-                    </li>
-                    <li class="{{ Request::is('features/history-transactions*') ? 'active' : '' }}">
+                    @if(auth()->user()->role == 'admin')
+                        <li class="{{ Request::is('features/products') ? 'active' : '' }}">
+                            <a class="nav-link" href="/features/products">Products</a>
+                        </li>
+                        <li class="{{ Request::is('features/users') ? 'active' : '' }}">
+                            <a class="nav-link" href="/features/users">Users</a>
+                        </li>
+                    @endif
+                    @if(auth()->user()->role == 'staff')
+                        <li class="{{ Request::is('features/transactions') ? 'active' : '' }}">
+                            <a class="nav-link" href="/features/transactions">Transactions/Cart</a>
+                        </li>
+                    @endif
+                    <li class="{{ Request::is('features/history-transactions') ? 'active' : '' }}">
                         <a class="nav-link" href="/features/history-transactions">History Transactions</a>
-                    </li>
-                    <li class="{{ Request::is('features/users*') ? 'active' : '' }}">
-                        <a class="nav-link" href="/features/users">Users</a>
                     </li>
                 </ul>
             </li>

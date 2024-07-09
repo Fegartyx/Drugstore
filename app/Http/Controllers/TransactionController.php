@@ -18,7 +18,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $products = Product::doesntHave('cart')->where('stock', '>', 0)->get()->sortBy('name');
+        $products = Product::doesntHave('cart')->where('stock', '>', 0)->get()->sortBy('expire_date');
         $carts = Product::has('cart')->get()->sortByDesc('cart.created_at');
         return view('pages.transactionCart.index', [
             // 'products' => Product::latest()->paginate(10),
@@ -46,10 +46,15 @@ class TransactionController extends Controller
         $carts = Cart::all()->map(function ($cart) {
             return [
                 'product_id' => $cart->product_id,
-                'quantity' => $cart->quantity,
+                'name' => $cart->product->name,
+                'price' => $cart->product->price,
+                'quantity' => $cart->quantity, 'amount' => $cart['quantity'],
                 'subtotal' => $cart->product->price * $cart->quantity
             ];
         })->toArray();
+
+        $cartsData = Cart::get();
+        // dd($carts);
 
         $transactionData = [
             'total_harga' => $total,
@@ -62,9 +67,6 @@ class TransactionController extends Controller
         $transaction = Transaction::latest()->first();
         $transactionId = $transaction ? $transaction->id : 1;
 
-        $cartsData = Cart::get();
-        // dd($transactionId);
-
         foreach ($cartsData as $cart) {
             $historyTransactionData = [
                 'product_id' => $cart['product_id'],
@@ -76,6 +78,12 @@ class TransactionController extends Controller
             HistoryTransaction::create($historyTransactionData);
         }
         Cart::truncate();
+
+        foreach ($cartsData as $cart) {
+            $product = Product::find($cart->product_id);
+            $product->stock -= $cart->quantity;
+            $product->save();
+        }
 
         return redirect('/features/history-transactions')->with('success', 'History created successfully!');
     }

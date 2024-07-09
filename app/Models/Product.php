@@ -21,8 +21,14 @@ class Product extends Model
         return $this->belongsTo(HistoryTransaction::class);
     }
 
+    public function historyTransaction()
+    {
+        return $this->hasMany(HistoryTransaction::class, 'product_id');
+    }
+
     public function cart()
     {
         return $this->hasOne(Cart::class);
+        // return $this->belongsTo(Cart::class);
     }
 }

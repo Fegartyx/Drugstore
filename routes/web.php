@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\HistoryTransactionExport;
 use App\Http\Controllers\CartController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -21,14 +22,15 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('/features/users', UserController::class);
-    Route::resource('/features/products', ProductController::class);
+    Route::resource('/features/users', UserController::class)->middleware('admin');
+    Route::resource('/features/products', ProductController::class)->middleware('admin');
     Route::resource('/features/categories', CategoryController::class);
-    Route::resource('/features/transactions', TransactionController::class);
+    Route::resource('/features/transactions', TransactionController::class)->middleware('user');
     Route::resource('/features/history-transactions', HistoryTransactionController::class);
     Route::post('/features/cart-store', [CartController::class, 'store']);
-    Route::delete('/features/cart-delete/{id}', [CartController::class, 'destroy']);
+    Route::delete('/features/cart-delete/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::patch('/features/cart-update/{cart}', [CartController::class, 'update'])->name('cart.update');
+    Route::get('/export', [HistoryTransactionController::class, 'export'])->name('export');
 });
 Route::get('/dashboard', function () {
     return view('pages.dashboard-general-dashboard');

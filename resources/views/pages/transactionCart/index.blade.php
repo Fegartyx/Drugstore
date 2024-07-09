@@ -15,7 +15,7 @@
                     <div class="card-header">
                         Pilih Barang
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <form action="/features/cart-store" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" id="itemId">
@@ -47,7 +47,7 @@
                                                             <th scope="col">#</th>
                                                             <th scope="col">Nama Barang</th>
                                                             <th scope="col">Kategori</th>
-                                                            <th scope="col">Foto</th>
+                                                            {{-- <th scope="col">Foto</th> --}}
                                                             <th scope="col">Harga</th>
                                                             <th scope="col">Stok</th>
                                                             <th scope="col">Opsi</th>
@@ -60,10 +60,10 @@
                                                                 <th scope="row">{{ $loop->iteration }}</th>
                                                                 <td>{{ $item->name }}</td>
                                                                 <td>{{ $item->category->name }}</td>
-                                                                <td>
+                                                                {{-- <td>
                                                                     <img src="{{ asset($item->image) }}" width="50px"
                                                                         height="50px">
-                                                                </td>
+                                                                </td> --}}
                                                                 <td>Rp {{ $item->price }}</td>
                                                                 <td>{{ $item->stock }}</td>
                                                                 <td>
@@ -103,7 +103,8 @@
                 </div>
             </div>
 
-            <div class="col-md-8 mb-4 mt-lg-5">
+            {{-- TODO : Pembayaran Cart --}}
+            <div class="col-md-6 mt-lg-5">
                 <div class="card mt-lg-5">
                     <div class="card-header">
                         Pembayaran
@@ -141,6 +142,17 @@
                                 </div>
                             </div>
 
+                            {{-- <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Total Kembalian</label>
+
+                                <div class="input-group col-sm-10">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rp</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="return_total" placeholder="0" readonly>
+                                </div>
+                            </div> --}}
+
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Tanggal</label>
 
@@ -157,81 +169,85 @@
             </div>
         </div>
 
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nama Barang</th>
-                    <th scope="col">Kategori</th>
-                    <th scope="col">Foto</th>
-                    <th scope="col">Harga</th>
-                    <th scope="col">Jumlah</th>
-                    <th scope="col">Subtotal</th>
-                    <th scope="col">Opsi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($itemCarts as $item)
+        <div class="">
+            <table class="table table-striped">
+                <thead class="thead-dark">
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->category->name }}</td>
-                        <td>
+                        <th scope="col">#</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Kategori</th>
+                        {{-- <th scope="col">Foto</th> --}}
+                        <th scope="col">Harga</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Opsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($itemCarts as $item)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->category->name }}</td>
+                            {{-- <td>
                             <img src="{{ asset($item->image) }}" width="50px" height="50px">
-                        </td>
-                        <td>Rp {{ $item->price }}</td>
-                        <td>{{ $item->cart->quantity }}</td>
-                        <td>Rp {{ $item->price * $item->cart->quantity }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary" data-toggle="modal"
-                                data-target="#ubahJumlah{{ $loop->iteration }}">Ubah</button>
-                            <form action="/features/cart-delete/{{ $item->cart->id }}" method="post" class="d-inline">
-                                @csrf
-                                @method('DELETE')
+                        </td> --}}
+                            <td>Rp {{ $item->price }}</td>
+                            <td>{{ $item->cart->quantity }}</td>
+                            <td>Rp {{ $item->price * $item->cart->quantity }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" data-toggle="modal"
+                                    data-target="#ubahJumlah{{ $loop->iteration }}">Ubah</button>
+                                {{-- <form action="/features/cart-delete/{{ $item->product->id }}" method="post" --}}
+                                <form action="{{ route('cart.destroy', ['id' => $item->cart->id]) }}" method="post"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
 
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                            </form>
+                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
 
-                            <div class="modal fade" id="ubahJumlah{{ $loop->iteration }}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Ubah Jumlah '{{ $item->name }}'</h5>
-                                            <button type="button" class="close" data-dismiss="modal">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
+                                <div class="modal fade" id="ubahJumlah{{ $loop->iteration }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Ubah Jumlah '{{ $item->name }}'</h5>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
 
-                                        <div class="modal-body">
-                                            <form action="{{ route('cart.update', $item->cart) }}" method="post">
-                                                @csrf
-                                                @method('PATCH')
+                                            <div class="modal-body">
+                                                <form action="{{ route('cart.update', $item->cart) }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
 
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <input type="number" min="1" max="{{ $item->stock }}"
-                                                            value="{{ $item->cart->quantity }}" class="form-control"
-                                                            name="quantity" placeholder="Masukkan jumlah..." required>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Unit</span>
-                                                            <button type="submit"
-                                                                class="btn btn-primary float-right">Ubah</button>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="number" min="1"
+                                                                max="{{ $item->stock }}"
+                                                                value="{{ $item->cart->quantity }}" class="form-control"
+                                                                name="quantity" placeholder="Masukkan jumlah..." required>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">Unit</span>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary float-right">Ubah</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
-
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>

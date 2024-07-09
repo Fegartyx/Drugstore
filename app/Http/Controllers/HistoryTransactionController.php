@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HistoryTransactionExport;
 use App\Models\HistoryTransaction;
 use App\Http\Requests\StoreHistoryTransactionRequest;
 use App\Http\Requests\UpdateHistoryTransactionRequest;
-use App\Models\Product;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HistoryTransactionController extends Controller
 {
@@ -65,5 +66,10 @@ class HistoryTransactionController extends Controller
     public function destroy(HistoryTransaction $historyTransaction)
     {
         //
+    }
+
+    public function export()
+    {
+        return Excel::download(new HistoryTransactionExport, 'history_transactions.xlsx');
     }
 }
