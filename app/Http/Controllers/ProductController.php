@@ -81,11 +81,15 @@ class ProductController extends Controller
 
         foreach ($product as $prod) {
             if (Str::lower(preg_replace('/\s+/', '', $request->name)) === Str::lower(preg_replace('/\s+/', '', $prod->name))) {
-                return redirect('/features/products')->with('error', 'Product already exist!');
+                if ($request->expireDate === $prod->expireDate) {
+                    return redirect('/features/products')->with('error', 'Product already exist!');
+                } else {
+                    break;
+                }
             }
         }
 
-        // Product::create($validatedData);
+        Product::create($validatedData);
 
         return redirect('/features/products')->with('success', 'New product has been added!');
     }
