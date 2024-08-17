@@ -35,7 +35,7 @@
 
                 <div class="row mt-4">
                     <div class="col-12">
-                        <div class="card bg-light">
+                        <div class="card">
                             <div class="card-header">
                                 <h4>All Products</h4>
                             </div>
@@ -55,7 +55,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table-striped table">
-                                        <tr>
+                                        <tr class="text-black font-weight-bold">
                                             <th>Name</th>
                                             <th>Category</th>
                                             <th>Price</th>

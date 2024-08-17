@@ -1273,9 +1273,9 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 /* 3.6 Table */
-.table {
-    color: inherit;
-}
+/*.table {*/
+/*    color: inherit;*/
+/*}*/
 
 .table td, .table:not(.table-bordered) th {
     border-top: none;

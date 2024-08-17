@@ -69,7 +69,7 @@
 
                                                 <td>{{ $product->name }}
                                                 </td>
-                                                <td>
+                                                <td data-format="0.00">
                                                     {{ $product->price }}
                                                 </td>
                                                 <td>
